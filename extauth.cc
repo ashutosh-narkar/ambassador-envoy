@@ -15,7 +15,7 @@ ExtAuth::ExtAuth(ExtAuthConfigConstSharedPtr config) : config_(config) {}
 ExtAuth::~ExtAuth() { ASSERT(!auth_request_); }
 
 FilterHeadersStatus ExtAuth::decodeHeaders(HeaderMap& headers, bool) {
-  log().info("ExtAuth Request received; contacting auth server");
+  log().info("XXXX ExtAuth Request received; contacting auth server");
 
   // Copy original headers as a JSON object
   std::string json("{");
@@ -33,10 +33,10 @@ FilterHeadersStatus ExtAuth::decodeHeaders(HeaderMap& headers, bool) {
   // Request external authentication
   auth_complete_ = false;
   MessagePtr request(new RequestMessageImpl());
-  request->headers().insertMethod().value(Http::Headers::get().MethodValues.Post);
-  request->headers().insertPath().value(std::string("/ambassador/auth"));
+  request->headers().insertMethod().value(Http::Headers::get().MethodValues.Get);
+  request->headers().insertPath().value(std::string("/"));
   request->headers().insertHost().value(config_->cluster_); // cluster name is Host: header value!
-  request->headers().insertContentType().value(std::string("application/json"));
+  request->headers().insertContentType().value(std::string("text/html"));
   request->headers().insertContentLength().value(request_body.size());
   request->body() = Buffer::InstancePtr(new Buffer::OwnedImpl(request_body));
   auth_request_ =

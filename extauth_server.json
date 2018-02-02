@@ -18,18 +18,12 @@
             "route_config": {
               "virtual_hosts": [
                 {
-                  "name": "api_gateway",
+                  "name": "opa",
                   "domains": ["*"],
                   "routes": [
                     {
-                      "prefix": "/service",
-                      "cluster": "httpbin",
-                      "auto_host_rewrite": true,
-                      "prefix_rewrite": "/"
-                    },
-                    {
-                      "prefix": "/auth",
-                      "cluster": "httpbin",
+                      "prefix": "/opa",
+                      "cluster": "opa_service",
                       "auto_host_rewrite": true,
                       "prefix_rewrite": "/"
                     }
@@ -42,7 +36,7 @@
                 "type": "decoder",
                 "name": "extauth",
                 "config": {
-                  "cluster": "auth",
+                  "cluster": "opa_service",
                   "timeout_ms": 5000
                 }
               },
@@ -62,24 +56,13 @@
   "cluster_manager": {
     "clusters": [
       {
-        "name": "httpbin",
+        "name": "opa_service",
         "type": "logical_dns",
         "connect_timeout_ms": 5000,
         "lb_type": "random",
         "hosts": [
           {
-            "url": "tcp://httpbin.org:80"
-          }
-        ]
-      },
-      {
-        "name": "auth",
-        "type": "logical_dns",
-        "connect_timeout_ms": 5000,
-        "lb_type": "random",
-        "hosts": [
-          {
-            "url": "tcp://docker.for.mac.localhost:3000"
+            "url": "tcp://10.1.10.48:8181"
           }
         ]
       }
