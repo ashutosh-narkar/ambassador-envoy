@@ -25,7 +25,7 @@
                       "prefix": "/opa",
                       "cluster": "opa_service",
                       "auto_host_rewrite": true,
-                      "prefix_rewrite": "/"
+                      "prefix_rewrite": "/v1/data/httpapi/authz"
                     }
                   ]
                 }
