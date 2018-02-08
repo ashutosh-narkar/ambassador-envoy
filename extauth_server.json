@@ -22,10 +22,9 @@
                   "domains": ["*"],
                   "routes": [
                     {
-                      "prefix": "/opa",
-                      "cluster": "opa_service",
-                      "auto_host_rewrite": true,
-                      "prefix_rewrite": "/v1/data/httpapi/authz"
+                      "prefix": "/people",
+                      "cluster": "test_server",
+                      "auto_host_rewrite": true
                     }
                   ]
                 }
@@ -36,7 +35,7 @@
                 "type": "decoder",
                 "name": "extauth",
                 "config": {
-                  "cluster": "opa_service",
+                  "cluster": "opa_server",
                   "timeout_ms": 5000
                 }
               },
@@ -56,13 +55,24 @@
   "cluster_manager": {
     "clusters": [
       {
-        "name": "opa_service",
+        "name": "opa_server",
         "type": "logical_dns",
         "connect_timeout_ms": 5000,
         "lb_type": "random",
         "hosts": [
           {
-            "url": "tcp://10.1.10.48:8181"
+            "url": "tcp://docker.for.mac.localhost:8181"
+          }
+        ]
+      },
+      {
+        "name": "test_server",
+        "type": "logical_dns",
+        "connect_timeout_ms": 5000,
+        "lb_type": "random",
+        "hosts": [
+          {
+            "url": "tcp://docker.for.mac.localhost:8000"
           }
         ]
       }
